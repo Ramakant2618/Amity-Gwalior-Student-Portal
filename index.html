@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Amity University Gwalior Student Portal</title>
+    <style>
+        body{ font-family: Arial; margin:0; background:#f2f2f2; }
+        header{ background:#0056b3; color:white; text-align:center; padding:20px; font-size:28px; }
+        nav{ background:#003d80; text-align:center; padding:15px; }
+        button{ background:#0056b3; color:white; border:none; border-radius:8px; padding:10px 15px; margin:5px; cursor:pointer; }
+        input[type="file"]{ margin-top:5px; }
+        .box{ width:80%; margin:20px auto; background:white; padding:20px; border-radius:10px; }
+        .section{ display:none; }
+        ul{ padding-left:20px; }
+        li{ margin:5px 0; }
+        .subject{ margin-bottom:20px; padding:10px; border:1px solid #ccc; border-radius:8px; background:#f9f9f9; }
+    </style>
+</head>
+<body>
+
+<header>
+    Amity University Gwalior Student Portal 🎓<br>
+    <small>Developed by Ramakant Sharma | B.Tech CSE 1st Year 💻</small>
+</header>
+
+<nav>
+    <button onclick="showSection('home')">Home</button>
+    <button onclick="showSection('login')">Login</button>
+    <button onclick="showSection('notes')">Notes</button>
+    <button onclick="showSection('attendance')">Attendance</button>
+    <button onclick="showSection('cgpa')">CGPA</button>
+    <button onclick="showSection('dashboard')">Dashboard</button>
+</nav>
+
+<!-- LOGIN -->
+<div class="box section" id="login" style="display:block;">
+    <h2>Student Login 🔐</h2>
+    <input type="text" id="studentName" placeholder="Enter your full name"><br><br>
+    <input type="text" id="mobile" placeholder="Enter Mobile Number"><br><br>
+    <input type="password" id="password" placeholder="Enter Password"><br><br>
+    <button onclick="loginStudent()">🔐 Login</button>
+    <button onclick="signUpStudent()">📝 Sign Up</button>
+    <button onclick="sendOTP()">📲 Send OTP</button>
+    <br><br>
+    <hr>
+    <h3>Continue with 👇</h3>
+    <button onclick="socialLogin('Google')">🌐 Google</button>
+    <button onclick="socialLogin('Facebook')">📘 Facebook</button>
+    <button onclick="socialLogin('WhatsApp')">💬 WhatsApp</button>
+    <h3 id="loginResult"></h3>
+</div>
+
+<div class="box section" id="home">
+    <h2 id="welcomeText">Welcome Student 👋</h2>
+    <p>📌 Today Class: OOP using C++</p>
+    <p>📌 Assignment Due: Tomorrow</p>
+</div>
+
+<!-- NOTES SECTION -->
+<div class="box section" id="notes">
+    <h2>Notes Upload & Subjects 📚</h2>
+
+    <div class="subject" data-subject="Applied Mathematics - II">
+        <strong>📘 Applied Mathematics - II</strong><br>
+        <input type="file" onchange="uploadFile(this)"> <button onclick="clearFiles(this)">Clear</button>
+        <ul class="fileList"></ul>
+    </div>
+
+    <div class="subject" data-subject="Programming in C">
+        <strong>💻 Programming in C</strong><br>
+        <input type="file" onchange="uploadFile(this)"> <button onclick="clearFiles(this)">Clear</button>
+        <ul class="fileList"></ul>
+    </div>
+
+    <div class="subject" data-subject="OOP using C++">
+        <strong>🖥️ OOP using C++</strong><br>
+        <input type="file" onchange="uploadFile(this)"> <button onclick="clearFiles(this)">Clear</button>
+        <ul class="fileList"></ul>
+    </div>
+
+    <div class="subject" data-subject="BEEE">
+        <strong>⚡ BEEE</strong><br>
+        <input type="file" onchange="uploadFile(this)"> <button onclick="clearFiles(this)">Clear</button>
+        <ul class="fileList"></ul>
+    </div>
+
+    <div class="subject" data-subject="Engineering Chemistry">
+        <strong>🧪 Engineering Chemistry</strong><br>
+        <input type="file" onchange="uploadFile(this)"> <button onclick="clearFiles(this)">Clear</button>
+        <ul class="fileList"></ul>
+    </div>
+
+    <div class="subject" data-subject="English Communication">
+        <strong>📖 English Communication</strong><br>
+        <input type="file" onchange="uploadFile(this)"> <button onclick="clearFiles(this)">Clear</button>
+        <ul class="fileList"></ul>
+    </div>
+
+    <div class="subject" data-subject="Engineering Graphics">
+        <strong>📊 Engineering Graphics</strong><br>
+        <input type="file" onchange="uploadFile(this)"> <button onclick="clearFiles(this)">Clear</button>
+        <ul class="fileList"></ul>
+    </div>
+
+    <div class="subject" data-subject="Workshop / Practical">
+        <strong>🛠️ Workshop / Practical</strong><br>
+        <input type="file" onchange="uploadFile(this)"> <button onclick="clearFiles(this)">Clear</button>
+        <ul class="fileList"></ul>
+    </div>
+
+</div>
+
+<div class="box section" id="attendance">
+    <h2>Attendance Check 📊</h2>
+    <input type="number" id="present" placeholder="Present Classes"><br><br>
+    <input type="number" id="total" placeholder="Total Classes"><br><br>
+    <button onclick="calculateAttendance()">Check Attendance</button>
+    <h3 id="result"></h3>
+</div>
+
+<div class="box section" id="cgpa">
+    <h2>CGPA Calculator 📈</h2>
+    <input type="number" id="sgpa1" placeholder="Semester 1 SGPA"><br><br>
+    <input type="number" id="sgpa2" placeholder="Semester 2 SGPA"><br><br>
+    <button onclick="calculateCGPA()">Calculate CGPA</button>
+    <h3 id="cgpaResult"></h3>
+</div>
+
+<div class="box section" id="dashboard">
+    <h2>Dashboard 📅</h2>
+    <p>🕘 10:00 AM - OOP Class</p>
+    <p>🕛 12:00 PM - Maths Class</p>
+    <p>🕒 3:00 PM - Chemistry Lab</p>
+</div>
+
+<script>
+function showSection(id)
+{
+    let sections = document.getElementsByClassName("section");
+    for(let i=0;i<sections.length;i++) sections[i].style.display="none";
+    document.getElementById(id).style.display="block";
+}
+
+// LOGIN FUNCTIONS
+function loginStudent()
+{
+    let name = document.getElementById("studentName").value;
+    if(name==""){ document.getElementById("loginResult").innerHTML="⚠️ Please enter your name"; return; }
+    document.getElementById("loginResult").innerHTML="✅ Login Successful";
+    showSection('home');
+    document.getElementById("welcomeText").innerHTML="Welcome " + name + " 👋";
+}
+
+function signUpStudent(){ document.getElementById("loginResult").innerHTML="✅ Sign Up Successful"; }
+function sendOTP(){ let otp=Math.floor(1000+Math.random()*9000); document.getElementById("loginResult").innerHTML="📲 OTP Sent: "+otp; }
+function socialLogin(platform){ document.getElementById("loginResult").innerHTML="✅ Logged in with "+platform; showSection('home'); }
+
+// ATTENDANCE
+function calculateAttendance()
+{
+    let p=parseFloat(document.getElementById("present").value);
+    let t=parseFloat(document.getElementById("total").value);
+    if(isNaN(p)||isNaN(t)||t==0){ document.getElementById("result").innerHTML="⚠️ Enter valid numbers"; return; }
+    let per=(p/t)*100;
+    document.getElementById("result").innerHTML="Attendance = "+per.toFixed(2)+"%";
+}
+
+// CGPA
+function calculateCGPA()
+{
+    let s1=parseFloat(document.getElementById("sgpa1").value);
+    let s2=parseFloat(document.getElementById("sgpa2").value);
+    if(isNaN(s1)||isNaN(s2)){ document.getElementById("cgpaResult").innerHTML="⚠️ Enter valid SGPA"; return; }
+    document.getElementById("cgpaResult").innerHTML="CGPA = "+((s1+s2)/2).toFixed(2);
+}
+
+// NOTES UPLOAD
+function uploadFile(input)
+{
+    let file=input.files[0];
+    if(!file) return;
+    let ul=input.parentElement.querySelector(".fileList");
+    let li=document.createElement("li");
+    let link=document.createElement("a");
+    link.href=URL.createObjectURL(file);
+    link.target="_blank";
+    link.innerHTML="📄 "+file.name;
+    li.appendChild(link);
+    ul.appendChild(li);
+}
+
+function clearFiles(btn)
+{
+    let ul=btn.parentElement.querySelector(".fileList");
+    ul.innerHTML="";
+    let input=btn.parentElement.querySelector("input[type=file]");
+    input.value="";
+}
+</script>
+
+</body>
+</html>
